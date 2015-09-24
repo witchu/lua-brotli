@@ -39,7 +39,6 @@ clean:
 	$(RM) $(CMOD) $(OBJS) $(ENCOBJ) $(DECOBJ)
 
 brotli: $(OBJS) deps
-	set
 	$(CXX) $(LDFLAGS) $(OBJS) $(ENCOBJ) $(DECOBJ) -o $(CMOD)
 
 .cc.o:
