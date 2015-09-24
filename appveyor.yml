@@ -4,7 +4,7 @@ platform: x86
 clone_depth: 2
 clone_folder: c:\lua-brotli
 install:
-#- '"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" x86'
+- '"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" x86'
 - c:\lua-brotli\ci-scripts\install_luarocks.bat
 build_script:
 - cd c:\lua-brotli
