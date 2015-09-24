@@ -21,8 +21,8 @@ env:
 #    - master
 
 before_install:
-  - bash .travis/setup_linux_gcc.sh
-  - bash .travis/setup_lua.sh
+  - bash ci-scripts/setup_linux_gcc.sh
+  - bash ci-scripts/setup_lua.sh
 
 install: 
   - sudo luarocks make lua-brotli-1.0-1.rockspec
