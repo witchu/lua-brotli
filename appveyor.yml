@@ -11,3 +11,5 @@ build_script:
 - luarocks make lua-brotli-1.0-1.rockspec
 test_script:
 - echo ok
+artifacts:
+- path: brotli.dll
