@@ -17,9 +17,9 @@ env:
 #    - LUA=lua5.3
 #    - LUA=luajit
 
-branches:
-  only:
-    - master
+#branches:
+#  only:
+#    - master
 
 before_install:
   - bash .travis/setup_lua.sh
