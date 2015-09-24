@@ -4,7 +4,7 @@ ifeq ($(UNAME), Linux)
 # linux config
 LUA_INCDIR ?= /usr/include/lua5.1
 LUA_LIBDIR ?= /usr/lib
-LIBFLAGS   ?= -O2 -shared -fPIC
+LIBFLAGS   ?= -shared
 endif
 ifeq ($(UNAME), Darwin)
 # macosx config
@@ -39,10 +39,9 @@ clean:
 	$(RM) $(CMOD) $(OBJS) $(ENCOBJ) $(DECOBJ)
 
 brotli: $(OBJS) deps
-	$(CC) $(LDFLAGS) $(OBJS) $(ENCOBJ) $(DECOBJ) -o $(CMOD)
+	$(CXX) $(LDFLAGS) $(OBJS) $(ENCOBJ) $(DECOBJ) -o $(CMOD)
 
 .cc.o:
-	echo $(CXXFLAGS) $(INCDIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 deps:
