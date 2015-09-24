@@ -24,8 +24,15 @@ CMOD        = $(LUALIB)
 OBJS        = lua_brotli.o
 
 CFLAGS      = $(LUA_CFLAGS) -I$(LUA_INCDIR)
-CXXFLAGS    = $(LUA_CFLAGS) -I$(LUA_INCDIR) -std=c++11
+CXXFLAGS    = $(LUA_CFLAGS) -I$(LUA_INCDIR)
 LDFLAGS     = $(LIBFLAGS) -L$(LUA_LIBDIR)
+
+GCCVERSION := $(shell gcc --version | grep ^gcc | sed 's/^.* //g' | sed 's/^4\.6\..*/bad/')
+ifeq ($(GCCVERSION), bad)
+CXXFLAGS   += -std=c++0x
+else
+CXXFLAGS   += -std=c++11
+endif
 
 
 # rules
