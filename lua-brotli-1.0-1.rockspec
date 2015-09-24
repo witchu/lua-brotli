@@ -1,10 +1,10 @@
 package = "lua-brotli"
   version = "1.0-1"
   source = {
-    url = "https://github.com/witchu/lua-brotli"
+    url = "git://github.com/witchu/lua-brotli"
   }
   description = {
-    summary = "A simple brotli lua binding.",
+    summary = "Google brotli binding for Lua.",
     detailed = [[
       Consists of two functions: compress and decompress.
       Both functions take an input string and return an output string.
