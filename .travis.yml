@@ -5,16 +5,16 @@ language: cpp
 
 os:
   - linux
-#  - osx
+  - osx
 
 env:
   global:
     - LUAROCKS=2.2.0
   matrix:
     - LUA=lua5.1
-#    - LUA=lua5.2
-#    - LUA=lua5.3
-#    - LUA=luajit
+    - LUA=lua5.2
+    - LUA=lua5.3
+    - LUA=luajit
 
 #branches:
 #  only:
