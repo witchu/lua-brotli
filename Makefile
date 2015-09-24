@@ -27,12 +27,6 @@ CFLAGS      = $(LUA_CFLAGS) -I$(LUA_INCDIR)
 CXXFLAGS    = $(LUA_CFLAGS) -I$(LUA_INCDIR) -std=c++11
 LDFLAGS     = $(LIBFLAGS) -L$(LUA_LIBDIR)
 
-# fix: using 4.8 for travis
-GCCVERSION := $(shell gcc --version | grep ^gcc | sed 's/^.* //g' | sed 's/^4\.6\..*/bad/')
-ifeq ($(GCCVERSION), bad)
-CXX         = g++-4.8
-endif
-
 
 # rules
 
