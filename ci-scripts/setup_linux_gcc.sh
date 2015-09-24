@@ -1,6 +1,6 @@
 #! /bin/bash
 
-source .travis/platform.sh
+source ci-scripts/platform.sh
 
 if [ "$PLATFORM" == "linux" ]; then
   sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
