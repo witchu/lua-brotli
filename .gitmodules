@@ -1,3 +1,0 @@
-[submodule "brotli"]
-	path = brotli
-	url = https://github.com/witchu/brotli
