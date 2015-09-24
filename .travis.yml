@@ -2,11 +2,10 @@
 # thank you zhaozg
 
 language: cpp
-compiler: clang
 
 os:
   - linux
-  - osx
+#  - osx
 
 env:
   global:
@@ -22,9 +21,13 @@ env:
 #    - master
 
 before_install:
+  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+  - sudo apt-get update -qq
   - bash .travis/setup_lua.sh
 
 install: 
+  - sudo apt-get install -qq g++-4.8
+  - export CXX="g++-4.8"
   - sudo luarocks make lua-brotli-1.0-1.rockspec
 
 script:
