@@ -4,6 +4,18 @@
 #include "brotli/enc/encode.h"
 #include "brotli/enc/streams.h"
 
+static void luaL_fieldinteger(lua_State *L, int table_index, const char *field_name, int &value)
+{
+  lua_getfield(L, table_index, field_name);
+  int type = lua_type(L, -1);
+  if (type != LUA_TNIL)
+  {
+    if (type != LUA_TNUMBER) luaL_error(L, "field '%s' must be a number", field_name);
+    value = lua_tointeger(L, -1);
+  }
+  lua_pop(L, 1);
+}
+
 class MemReader : public brotli::BrotliIn
 {
 public:
@@ -52,6 +64,22 @@ static int lb_compress(lua_State *L)
   size_t in_len;
   const char *in = luaL_checklstring(L, 1, &in_len);
 
+  brotli::BrotliParams params;
+  if (lua_isnumber(L, 2))
+  {
+    params.quality = lua_tointeger(L, 2);
+
+  }
+  else if (lua_istable(L, 2))
+  {
+    int mode = -1;
+    luaL_fieldinteger(L, 2, "mode",    mode);
+    luaL_fieldinteger(L, 2, "quality", params.quality);
+    luaL_fieldinteger(L, 2, "lgwin",   params.lgwin);
+    luaL_fieldinteger(L, 2, "lgblock", params.lgblock);
+    if (mode >= 0) params.mode = (brotli::BrotliParams::Mode)mode;
+  }
+
   luaL_Buffer b;
 #if LUA_VERSION_NUM >= 502
   luaL_buffinitsize(L, &b, in_len / 2);
@@ -59,7 +87,6 @@ static int lb_compress(lua_State *L)
   luaL_buffinit(L, &b);
 #endif
 
-  brotli::BrotliParams params;
   MemReader input(in, in_len);
   LuaWriter output(&b);
   if (!brotli::BrotliCompress(params, &input, &output))
@@ -126,6 +153,15 @@ LUALIB_API int luaopen_brotli(lua_State *L)
   lua_newtable(L);
   luaL_register(L, NULL, export_functions);
 #endif
+
+  int table = lua_gettop(L);
+  lua_pushinteger(L, brotli::BrotliParams::MODE_GENERIC);
+  lua_setfield(L, table, "MODE_GENERIC");
+  lua_pushinteger(L, brotli::BrotliParams::MODE_TEXT);
+  lua_setfield(L, table, "MODE_TEXT");
+  lua_pushinteger(L, brotli::BrotliParams::MODE_FONT);
+  lua_setfield(L, table, "MODE_FONT");
+
   return 1;
 }
 
