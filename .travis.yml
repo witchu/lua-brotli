@@ -28,10 +28,8 @@ install:
   - sudo luarocks make lua-brotli-1.0-1.rockspec
 
 script:
-#  - cd test
-#  - curl https://raw.githubusercontent.com/bluebird75/luaunit/master/luaunit.lua > luaunit.lua
-#  - lua test.lua
-  - echo ok
+  - cd test
+  - lua test.lua
 
 notifications:
   email:
