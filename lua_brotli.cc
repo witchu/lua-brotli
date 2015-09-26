@@ -7,19 +7,28 @@
 class MemReader : public brotli::BrotliIn
 {
 public:
-  MemReader(const void *data, size_t len) : data_(data), len_(len) { }
+  MemReader(const void *data, size_t len) : data_((const uint8_t *)data), len_(len) { }
   virtual ~MemReader() { }
 
   virtual const void* Read(size_t n, size_t* nread)
   {
     const void *d = data_;
-    *nread = len_;
-    data_ = NULL;
-    len_ = 0;
+    if (n >= len_)
+    {
+      *nread = len_;
+      data_ = NULL;
+      len_ = 0;
+    }
+    else
+    {
+      *nread = n;
+      data_ += n;
+      len_ -= n;
+    }
     return d;
   }
 private:
-  const void *data_;
+  const uint8_t *data_;
   size_t len_;
 };
 
@@ -38,7 +47,7 @@ private:
   luaL_Buffer *b;
 };
 
-int lb_compress(lua_State *L)
+static int lb_compress(lua_State *L)
 {
   size_t in_len;
   const char *in = luaL_checklstring(L, 1, &in_len);
@@ -61,14 +70,14 @@ int lb_compress(lua_State *L)
   return 1;
 }
 
-int BrotliLuaOutputFunction(void *data, const uint8_t *buf, size_t count)
+static int BrotliLuaOutputFunction(void *data, const uint8_t *buf, size_t count)
 {
   luaL_Buffer *b = (luaL_Buffer *)data;
   luaL_addlstring(b, (const char *)buf, count);
   return (int)count;
 }
 
-BrotliOutput BrotliInitLuaOutput(luaL_Buffer *b)
+static BrotliOutput BrotliInitLuaOutput(luaL_Buffer *b)
 {
   BrotliOutput output;
   output.cb_ = &BrotliLuaOutputFunction;
@@ -76,7 +85,7 @@ BrotliOutput BrotliInitLuaOutput(luaL_Buffer *b)
   return output;
 }
 
-int lb_decompress(lua_State *L)
+static int lb_decompress(lua_State *L)
 {
   size_t in_len;
   const char *in = luaL_checklstring(L, 1, &in_len);
